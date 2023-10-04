@@ -11,7 +11,7 @@ import { fecthWithAuthPost } from "../Auth/dependencyPost";
 import { API_PATH } from "../Api/Api";
 import { token } from "../Auth/token";
 import PastDateField from "../Fields/PastDateField"; // Import the PastDateField component
-import PincodeField from "../Fields/PincodeField";
+import MobileNumber from "../Fields/MobileNumber";
 
 const SignupForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -102,6 +102,7 @@ const SignupForm = () => {
           <Col md={6} className="Right-Half">
             <Row className="Fields-Form">
               <TextInputField
+              label="firstName"
                 name="firstname"
                 textType="alphabets"
                 value={firstName}
@@ -116,6 +117,7 @@ const SignupForm = () => {
                 validationErrorMessage="Please enter a valid name (max 25 characters)."
               />
               <TextInputField
+                label="lastname"
                 name="lastname"
                 textType="alphabets"
                 value={lastName}
@@ -132,6 +134,7 @@ const SignupForm = () => {
             </Row>
             <Row className="Fields-Form">
               <DropdownField
+                label="Select gender*"
                 name="gender"
                 value={gender}
                 onChange={(event) => setGender(event.target.value)}
@@ -191,7 +194,7 @@ const SignupForm = () => {
                 validated={validated}
                 feedbackMessage="Please enter a valid date of birth."
               />
-              <PincodeField
+              <MobileNumber
                 label="Mobile Number"
                 name="mobileNumber"
                 value={mobileNumber}
@@ -207,9 +210,9 @@ const SignupForm = () => {
               />
             </Row>
           </Col>
-           <Col md={6} className="image-half">
+           {/* <Col md={6} className="image-half">
             <img src={TodoImage} alt="Todo Image" className="user-image" />
-          </Col> 
+          </Col>  */}
         </Row>
         <div
           style={{

@@ -4,7 +4,7 @@ import DropdownField from "../Fields/DropDownField";
 import TextInputField from "../Fields/TextInputField";
 import FutureDateField from "../Fields/FutureDateField";
 import { API_PATH } from "../Api/Api";
-import './CreateTodo.css'
+import "./CreateTodo.css";
 import { token } from "../Auth/token";
 import { fecthWithAuthPost } from "../Auth/dependencyPost";
 import SuccessPopup from "../SuccessPopup";
@@ -24,7 +24,7 @@ const CreateTodo = () => {
   const [categories, setCategories] = useState([]);
   const [validated, setValidated] = useState(false);
 
-  const userId = localStorage.getItem('userId')
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -70,11 +70,11 @@ const CreateTodo = () => {
     }
 
     const formData = {
-      categoryId:category,
-      todoHeadline:headline,
-      todoDescription:description,
-      completedBy:completedByTime,
-      userId:userId
+      categoryId: category,
+      todoHeadline: headline,
+      todoDescription: description,
+      completedBy: completedByTime,
+      userId: userId,
     };
 
     try {
@@ -88,10 +88,10 @@ const CreateTodo = () => {
       if (!response) {
         const errorData = await response;
         throw new Error(errorData);
-        setShowErrorMessage(true)
+        setShowErrorMessage(true);
       }
       setShowSuccessMessage(true);
-      handleCancel()
+      handleCancel();
     } catch (error) {
       console.error("Error creating todo:", error);
     }
@@ -108,59 +108,63 @@ const CreateTodo = () => {
   return (
     <Container fluid className="p-0" style={{ overflowX: "hidden" }}>
       {/* <div  style={{ backgroundColor: "white" }}> */}
-            <Form className="createTodo" noValidate validated={validated} onSubmit={handleSubmit}>
-              <div className="page-heading mt-2">Create Todo</div>
-              <Row className="mt-4">
-                <DropdownField
-                  label="Category"
-                  name="category"
-                  value={category}
-                  onChange={handleCategoryChange}
-                  options={categories.map((category) => ({
-                    value: category.id,
-                    label: category.name,
-                  }))}
-                  required={true}
-                  colSize={4}
-                />
+      <Form
+        className="createTodo"
+        noValidate
+        validated={validated}
+        onSubmit={handleSubmit}
+      >
+        <div className="page-heading mt-2">Create Todo</div>
+        <Row className="mt-4">
+          <DropdownField
+            label="Category"
+            name="category"
+            value={category}
+            onChange={handleCategoryChange}
+            options={categories.map((category) => ({
+              value: category.id,
+              label: category.name,
+            }))}
+            required={true}
+            colSize={4}
+          />
 
-                <TextInputField
-                  label="Headline"
-                  name="headline"
-                  value={headline}
-                  onChange={handleHeadlineChange}
-                  type="text"
-                  required={true}
-                  maxLength={15}
-                  colSize={4}
-                  validationRegex={validationRegexOnlyAlpha}
-                  validationErrorMessage="Please enter a valid name (max 25 characters)."
-                />
-                </Row>
-                <Row className="mt-4">
+          <TextInputField
+            label="Headline"
+            name="headline"
+            value={headline}
+            onChange={handleHeadlineChange}
+            type="text"
+            required={true}
+            maxLength={15}
+            colSize={4}
+            validationRegex={validationRegexOnlyAlpha}
+            validationErrorMessage="Please enter a valid name (max 25 characters)."
+          />
+        </Row>
+        <Row className="mt-4">
+          <TextInputField
+            label="Description"
+            name="description"
+            value={description}
+            onChange={handleDescriptionChange}
+            type="textarea"
+            maxLength={255}
+            colSize={4}
+            validationRegex={validationRegexOnlyAlpha}
+            validationErrorMessage="Please enter a valid name (max 25 characters)."
+          />
 
-                <TextInputField
-                  label="Description"
-                  name="description"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  type="textarea"
-                  maxLength={255}
-                  colSize={4}
-                  validationRegex={validationRegexOnlyAlpha}
-                  validationErrorMessage="Please enter a valid name (max 25 characters)."
-                />
-
-                <FutureDateField
-                  label="Completed By Time"
-                  name="completedByTime"
-                  value={completedByTime}
-                  onChange={handleCompletedByTimeChange}
-                  required={true}
-                  colSize={4}
-                />
-              </Row>
-              <div
+          <FutureDateField
+            label="Completed By Time"
+            name="completedByTime"
+            value={completedByTime}
+            onChange={(e) => handleCompletedByTimeChange(e.target.value)}
+            required={true}
+            colSize={4}
+          />
+        </Row>
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -180,14 +184,14 @@ const CreateTodo = () => {
           </button>
         </div>
         <SuccessPopup
-              show={showSuccessMessage}
-              onClose={() => setShowSuccessMessage(false)}
-            />
-            <ErrorPopup
-              show={showErrorMessage}
-              onClose={() => setShowErrorMessage(false)}
-            />
-            </Form>
+          show={showSuccessMessage}
+          onClose={() => setShowSuccessMessage(false)}
+        />
+        <ErrorPopup
+          show={showErrorMessage}
+          onClose={() => setShowErrorMessage(false)}
+        />
+      </Form>
       {/* </div> */}
     </Container>
   );

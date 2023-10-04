@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form,Col } from "react-bootstrap";
-import CheveronIcon from "../icons/fi_chevron-down.png";
+import { FormControl, InputLabel, Select, MenuItem, Grid, IconButton, Typography } from '@mui/material';
+import ChevronIcon from '../icons/fi_chevron-down.png';
 
 const DropdownField = ({
   label,
@@ -11,35 +11,44 @@ const DropdownField = ({
   required,
   colSize,
   feedbackMessage,
-  validated
+  validated,
 }) => {
+  // Define the initial and expanded styles for the Select component
+  const initialSelectStyle = { '& .MuiSelect-outlined': { paddingRight: '32px', width: '100px' } };
+  const expandedSelectStyle = { '& .MuiSelect-outlined': { paddingRight: '32px', width: 'auto' } };
+
+  // Determine which style to apply based on the selected value
+  const selectStyle = value ? expandedSelectStyle : initialSelectStyle;
+
   return (
-    <Col lg={colSize} xl={colSize} md={colSize} sm={colSize} xs={12} xxs={'auto'}>
-      <Form.Group className="mb-4">
-        {label && <Form.Label>{label}</Form.Label>}
-        <Form.Select
-          as="select"
+    <Grid item lg={colSize} xl={colSize} md={colSize} sm={colSize} xs={12} sx={{ mb: 4 }}>
+      <FormControl fullWidth variant="outlined">
+        {label && <InputLabel>{label}</InputLabel>}
+        <Select
+          label={label}
           name={name}
-          className="dropdown"
           value={value}
           onChange={onChange}
           required={required}
+          sx={selectStyle} // Apply the selected style
         >
-          <option value="">{`Select ${name || 'Option'}*`}</option>
+          <MenuItem value="">{`Select ${name || 'Option'}*`}</MenuItem>
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <MenuItem key={option.value} value={option.value}>
               {option.label}
-            </option>
+            </MenuItem>
           ))}
-        </Form.Select>
-        <img src={CheveronIcon} className="chevron-icon" />
+        </Select>
+        <IconButton aria-label="open-dropdown" edge="end" sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}>
+          <img src={ChevronIcon} alt="Chevron Icon" className="chevron-icon" />
+        </IconButton>
         {validated && feedbackMessage && (
-          <Form.Control.Feedback type="invalid">
+          <Typography variant="caption" color="error">
             {feedbackMessage}
-          </Form.Control.Feedback>
+          </Typography>
         )}
-      </Form.Group>
-    </Col>
+      </FormControl>
+    </Grid>
   );
 };
 

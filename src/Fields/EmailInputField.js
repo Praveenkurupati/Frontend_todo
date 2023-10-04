@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Grid, TextField, Typography } from '@mui/material';
 
 const EmailInputField = ({
   label,
@@ -27,30 +27,29 @@ const EmailInputField = ({
   const emailValid = isValidEmail(value); // Check if the email is valid
 
   return (
-    <Col lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} xxs={'auto'}>
-      <Form.Group className="mb-4">
-        <Form.Control
-          type="email"
-          name={name}
-          className="input-figma"
-          required={required}
-          value={value}
-          placeholder='email*'
-          onChange={handleInputChange}
-          isInvalid={validated && !emailValid}
-        />
-        {validated && !emailValid && (
-          <Form.Control.Feedback type="invalid">
-            {invalidEmailMessage || 'Please enter a valid email address.'}
-          </Form.Control.Feedback>
-        )}
-        {validated && emailValid && feedbackMessage && (
-          <Form.Control.Feedback type="valid">
-            {feedbackMessage}
-          </Form.Control.Feedback>
-        )}
-      </Form.Group>
-    </Col>
+    <Grid item lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} sx={{ mb: 4 }}>
+      <TextField
+        fullWidth
+        type="email"
+        name={name}
+        required={required}
+        value={value}
+        label={label || 'Email*'}
+        placeholder='Email*'
+        onChange={handleInputChange}
+        error={validated && !emailValid}
+        helperText={
+          validated && !emailValid
+            ? invalidEmailMessage || 'Please enter a valid email address.'
+            : ''
+        }
+      />
+      {validated && emailValid && feedbackMessage && (
+        <Typography variant="body2" color="textSecondary">
+          {feedbackMessage}
+        </Typography>
+      )}
+    </Grid>
   );
 };
 

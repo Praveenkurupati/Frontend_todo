@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import FormHelperText from '@mui/material/FormHelperText';
+import { Grid, TextField, Typography } from '@mui/material';
 
-const TextInputField = ({
+const MobileNumber = ({
   label,
   name,
   required,
   value,
-  type,
   onChange,
   placeholder,
   feedbackMessage,
@@ -34,34 +31,33 @@ const TextInputField = ({
       setError(null);
       onChange({ target: { name, value: inputValue } });
     } else {
-      setError(
-        `Please enter a valid ${name} ${textType} (max ${maxLength} ${textType})`
-      );
+      setError(`Please enter a valid ${name} ${textType} (max ${maxLength} ${textType})`);
     }
   };
 
   return (
-    <Grid item lg={colSize} xl={colSize} md={colSize} sm={6} xs={12}>
+    <Grid item lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} sx={{ mb: 4 }}>
       <TextField
-        name={name}
-        label={label}
-        variant="outlined"
         fullWidth
+        name={name}
         required={required}
         placeholder={placeholder}
         value={value}
-        type={type}
+        label={label || 'Pincode'}
+        type="text"
         onChange={handleInputChange}
-        inputProps={{ maxLength: maxLength }}
+        inputProps={{
+          maxLength: maxLength,
+        }}
         error={!!error}
-      />
-      <FormHelperText sx={{ color: 'red' }}>
-        {error ||
+        helperText={
+          error ||
           (validated && !validationRegex.test(value) && feedbackMessage) ||
-          (validated && value.length <= 0 && feedbackMessage)}
-      </FormHelperText>
+          (validated && value.length <= 0 && 'Please enter a pincode.')
+        }
+      />
     </Grid>
   );
 };
 
-export default TextInputField;
+export default MobileNumber;

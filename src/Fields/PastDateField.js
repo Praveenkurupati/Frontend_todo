@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Grid, TextField, Typography } from '@mui/material';
 
 const PastDateField = ({
   label,
@@ -9,32 +9,34 @@ const PastDateField = ({
   required,
   colSize,
   feedbackMessage,
-  validated
+  validated,
 }) => {
   // Get the current date in ISO format (YYYY-MM-DD)
   const currentDate = new Date().toISOString().split('T')[0];
 
   return (
-    <Col lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} xxs={'auto'}>
-      <Form.Group className="mb-4">
-        {label && <Form.Label>{label}</Form.Label>}
-        <Form.Control
-          type="date"
-          className="inputDate-figma"
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-          // Set the max attribute to the current date to restrict to past dates
-          max={currentDate}
-        />
-        {validated && feedbackMessage && (
-          <Form.Control.Feedback type="invalid">
-            {feedbackMessage}
-          </Form.Control.Feedback>
-        )}
-      </Form.Group>
-    </Col>
+    <Grid item lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} sx={{ mb: 4 }}>
+      <TextField
+        fullWidth
+        type="date"
+        name={name}
+        value={value}
+        label={label || 'Date*'}
+        required={required}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputProps={{
+          max: currentDate,
+        }}
+        onChange={onChange}
+      />
+      {validated && feedbackMessage && (
+        <Typography variant="caption" color="error">
+          {feedbackMessage}
+        </Typography>
+      )}
+    </Grid>
   );
 };
 

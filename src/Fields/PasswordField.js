@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Grid, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityIconOff from '@mui/icons-material/VisibilityOff';
 
@@ -19,41 +19,60 @@ const PasswordInput = ({
     setPasswordVisible(!passwordVisible);
   };
 
+  const validatePassword = (password) => {
+    if (validated && !password) {
+      return 'Please enter a password.';
+    }
+
+    if (validated && password.length < 8) {
+      return 'Password must be at least 8 characters long.';
+    }
+
+    if (validated && !/[A-Z]/.test(password)) {
+      return 'Password must contain at least one capital letter.';
+    }
+
+    if (validated && !/[0-9]/.test(password)) {
+      return 'Password must contain at least one number.';
+    }
+
+    return null; // No errors
+  };
+
+  const passwordError = validatePassword(value);
+
   return (
-    <Col lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} xxs={'auto'}>
-      <Form.Group className="mb-4 mt-4">
-        <Form.Control
-          className="input-figma"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2"
-          placeholder="Password*"
-          type={passwordVisible ? 'text' : 'password'}
-          maxLength={25}
-          required={required}
-          value={value || ''}
-          onChange={onChange}
-        />
-
-        <span
-          id="button-addon2"
-          className="password-toggle-icon"
-          onClick={togglePasswordVisibility}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            cursor: 'pointer',
-          }}
-        >
-          {passwordVisible ? <VisibilityIcon /> : <VisibilityIconOff />}
-        </span>
-
-        <Form.Control.Feedback type="invalid">
-          {feedbackMessage || 'Please enter a password.'}
-        </Form.Control.Feedback>
-      </Form.Group>
-    </Col>
+    <Grid item lg={colSize} xl={colSize} md={colSize} sm={6} xs={12} sx={{ mb: 4, mt: 4 }}>
+      <TextField
+        fullWidth
+        label={label || 'Password*'}
+        variant="outlined"
+        type={passwordVisible ? 'text' : 'password'}
+        required={required}
+        value={value || ''}
+        onChange={(e) => {
+          onChange(e);
+          setPasswordVisible(false); // Hide the password when typing
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={togglePasswordVisibility} edge="end">
+                {passwordVisible ? <VisibilityIcon /> : <VisibilityIconOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+      {passwordError && (
+        <Typography variant="caption" color="error">
+          {passwordError}
+        </Typography>
+      )}
+      <div className="invalid-feedback">
+        {validated && !passwordError && feedbackMessage}
+      </div>
+    </Grid>
   );
 };
 
