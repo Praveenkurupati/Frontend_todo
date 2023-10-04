@@ -42,10 +42,10 @@ const LeftNav = () => {
           ))}
         </ul>
       </div>
-      <div style={{ display: 'flex', position: 'absolute', marginTop: '40rem', color: '#FFFFFF' }}>
+      <div style={{ display: 'flex', position: 'absolute', marginTop: '40rem', color: '#FFFFFF' }} onClick={handleLogOut}>
         <IconButton
           color="inherit"
-          onClick={handleLogOut}
+          
           style={{ backgroundColor: 'transparent', border: 'none' }}
         >
           <LogoutIcon />
